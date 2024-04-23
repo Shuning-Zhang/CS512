@@ -1,0 +1,1 @@
+dim_x,dim_y,dim_z,x_num_classes,y_num_classes,z_num_classes,noise,tau_x,tau_y,tau_z,nmi_x,nmi_y,nmi_z,ari_x,ari_y,ari_z,x_num_clusters,y_num_clusters,z_num_clusters,execution_time,method

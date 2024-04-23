@@ -2,11 +2,12 @@ import pandas as pd
 import numpy as np
 import os
 import sys
-from algorithms.tensor_coclust_tau import CoClust
+
+from tensorC.tensorcc.algorithms.tensor_coclust_tau import CoClust
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import adjusted_rand_score as ari
 from sklearn.metrics import normalized_mutual_info_score as nmi
-from utils import CreateOutputFile, CreateLogger
+from tensorC.tensorcc.utils import CreateOutputFile, CreateLogger
 
 if len(sys.argv)> 1 and sys.argv[1] == '-h':
     print('''
@@ -33,17 +34,27 @@ directory = os.path.dirname(output_path)
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-final = pd.read_pickle('./resources/movielens/movielens_final_'+ k + '.pkl')
-n = np.shape(final.groupby('userID').count())[0]
-m = np.shape(final.groupby('movieID').count())[0]
-l = np.shape(final.groupby('tagID').count())[0]
-T = np.zeros((n,m,l))
-y = np.zeros(m)
-for index, row in final.iterrows():
-    T[row['user_le'], row['movie_le'], row['tag_le']] = 1
-    y[row['movie_le']] = row['genre_le']
+# final = pd.read_pickle('./dataset/cc dataset/movielens/movielens_final_'+ k + '.pkl')
+# n = np.shape(final.groupby('userID').count())[0]
+# m = np.shape(final.groupby('movieID').count())[0]
+# # l = np.shape(final.groupby('tagID').count())[0]
+# T = np.zeros((n,m))
+# y = np.zeros(m)
+# for index, row in final.iterrows():
+#     T[row['user_le'], row['movie_le']] = 1
+#     y[row['movie_le']] = row['']
 
-#sparsity = 1 - (np.sum(T>0) / np.product(T.shape))
+# #sparsity = 1 - (np.sum(T>0) / np.product(T.shape))
+test_idx = pd.read_csv('./dataset/cc dataset/test_idx.txt', delimiter='\t',header=None)
+text_v = pd.read_csv('./dataset/cc dataset/costco_result.txt', delimiter='\t',header=None)
+
+n = np.shape(test_idx.groupby(0).count())[0]
+m = np.shape(test_idx.groupby(1).count())[0]
+T = np.zeros((n,m))
+y = np.zeros(m)
+for index, row in test_idx.iterrows():
+    T[row[0], row[1]] = 1
+    y[row[1]] = text_v[0]
 
 model = CoClust(n_iterations = np.sum(T.shape) * 100, optimization_strategy = alg, path = output_path)
 model.fit(T)
