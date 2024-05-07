@@ -439,6 +439,7 @@ class CoClust(BaseEstimator, ClusterMixin, TransformerMixin):
             self._actual_item[dimension] += 1
             selected_element = (self._actual_item[dimension]) % self._n[dimension]
             selected_source_cluster = self._assignment[dimension][selected_element]
+            lambdas, sum_lambdas = self._compute_lambdas(selected_element, dimension)
             #logging.debug("[INFO] selected_source_cluster: {0}".format(selected_source_cluster))
             #logging.debug("[INFO] number of elements in the cluster: {0}".format(np.shape(np.where(self._assignment[dimension] == selected_source_cluster)[0])))
 
@@ -449,11 +450,13 @@ class CoClust(BaseEstimator, ClusterMixin, TransformerMixin):
             logging.debug("[INFO] number of elements in the cluster: {0}".format(np.shape(np.where(self._assignment[dimension] == selected_source_cluster)[0])))
 
             # select a random element of selected_cluster
-            selected_element = choice(np.where(self._assignment[dimension]== selected_source_cluster)[0])
+            if np.shape(np.where(self._assignment[dimension] == selected_source_cluster))[1] != 0:
+                selected_element = choice(np.where(self._assignment[dimension]== selected_source_cluster)[0])
+                lambdas, sum_lambdas = self._compute_lambdas(selected_element, dimension)
             #print(selected_element)
-            logging.debug("[INFO] selected_element: {0}".format(selected_element))
+                logging.debug("[INFO] selected_element: {0}".format(selected_element))
 
-        lambdas, sum_lambdas = self._compute_lambdas(selected_element, dimension)
+        
         #logging.debug("[INFO] lambdas: {0}".format(lambdas))
         #logging.debug("[INFO] sum_lambdas: {0}".format(sum_lambdas))
 

@@ -24,7 +24,7 @@ if len(sys.argv)> 1 and sys.argv[1] == '-h':
 
 # k = sys.argv[1]
 alg = sys.argv[2] if (len(sys.argv)> 2) and (sys.argv[2] in ['ALT','AVG','AGG','ALT2','AGG2']) else 'ALT2'
-level = sys.argv[-1] if (len(sys.argv)> 2) and (sys.argv[-1] in ['DEBUG','INFO','WARNING','ERROR','CRITICAL']) else 'WARNING'
+level = 'DEBUG'
 logger = CreateLogger(level)
 
 f, dt = CreateOutputFile("MovieLens", date = True)
